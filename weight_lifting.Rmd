@@ -1,0 +1,29 @@
+---
+title: "Weight Lifting"
+author: "Jun Hui Ho"
+date: "18 July 2015"
+output: html_document
+---
+
+The purpose of this project is to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants and predict the manner in which they did the exercise., as indicated by the class variable They were asked to perform barbell lifts correctly and incorrectly in 5 different ways.
+
+A prediction model based on gradient boosting was built based on training data and its performance was evaluated using test data.
+
+```{r}
+# Import data
+train.data <- read.csv("pml-training.csv")
+test.data <- read.csv("pml-testing.csv")
+
+# Build models based on training data
+# Load caret package
+library(caret)
+
+# Train data based on gradient boosting model
+index <- which(is.na(train.data[1,]))
+fit <- train(classe ~ ., data = train.data[,-index], method = "gbm")
+fit
+
+# Predict class variable based on model
+predictions <- predict(fit, newdata = test.data[,-c(1:7)],na.rm=TRUE)
+predictions
+
